@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>SharedWebSocket example</title>
+        <script src="../dist/shared-websocket.umd.js"></script>
+    </head>
+    <body>
+        <button id="btn">SEND</button>
+
+        <script>
+            const socket = new SharedWebsocket('wss://echo.websocket.org')
+            socket.onmessage = console.log
+            socket.onerror = console.log
+            socket.onclose = (isMaster) => console.log('CLOSED!', isMaster)
+            socket.onopen = (isMaster) => console.log('OPENED!', isMaster)
+
+            const button = document.getElementById('btn')
+            button.addEventListener('click', e => {
+                socket.send('YAY')
+            })
+        </script>
+    </body>
+</html>
