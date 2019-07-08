@@ -1,7 +1,4 @@
 "use strict";
-// Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
-// import "core-js/fn/array.find"
-// ...
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -38,6 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
+require("core-js/fn/promise");
 var utils_1 = require("./utils");
 var SharedWebsocket = /** @class */ (function () {
     function SharedWebsocket(url, protocols) {
@@ -162,17 +161,19 @@ var SharedWebsocket = /** @class */ (function () {
         if (!event.newValue)
             return;
         try {
+            var json = JSON.parse(event.newValue);
+            if (json.uuid === this.uuid) {
+                return;
+            }
             switch (event.key) {
                 case this.WEBSOCKET_COMMUNICATION_KEY:
-                    this.handleCommunication(JSON.parse(event.newValue));
+                    this.handleCommunication(json);
                     break;
                 default:
                     break;
             }
         }
-        catch (error) {
-            console.log(error);
-        }
+        catch (error) { }
     };
     SharedWebsocket.prototype.answerIsMasterAlive = function () {
         var msg = {
@@ -234,6 +235,7 @@ var SharedWebsocket = /** @class */ (function () {
         }
     };
     SharedWebsocket.prototype.broadcast = function (msg) {
+        msg.uuid = this.uuid;
         localStorage.setItem(this.WEBSOCKET_COMMUNICATION_KEY, JSON.stringify(msg));
         localStorage.removeItem(this.WEBSOCKET_COMMUNICATION_KEY);
     };

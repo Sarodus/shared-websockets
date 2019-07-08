@@ -1,6 +1,5 @@
 // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
-// import "core-js/fn/array.find"
-// ...
+import 'core-js/fn/promise'
 
 import { uuidv4 } from './utils'
 
@@ -110,16 +109,18 @@ export default class SharedWebsocket {
     handleStorageEvents(event: any) {
         if (!event.newValue) return
         try {
+            const json = JSON.parse(event.newValue)
+            if (json.uuid === this.uuid) {
+                return
+            }
             switch (event.key) {
                 case this.WEBSOCKET_COMMUNICATION_KEY:
-                    this.handleCommunication(JSON.parse(event.newValue))
+                    this.handleCommunication(json)
                     break
                 default:
                     break
             }
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
 
     answerIsMasterAlive() {
@@ -193,7 +194,8 @@ export default class SharedWebsocket {
         }
     }
 
-    broadcast(msg: object) {
+    broadcast(msg: object | any) {
+        msg.uuid = this.uuid
         localStorage.setItem(this.WEBSOCKET_COMMUNICATION_KEY, JSON.stringify(msg))
         localStorage.removeItem(this.WEBSOCKET_COMMUNICATION_KEY)
     }

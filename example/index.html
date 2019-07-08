@@ -6,16 +6,15 @@
     <body>
         <button id="btn">SEND</button>
         <script>
-            const socket = new SharedWebsocket('wss://echo.websocket.org')
-            socket.onmessage = msg => {
-                console.log(`Got message from ${msg.isMaster ? "master" : "slave"}!`, msg)
+            var socket = new SharedWebsocket('wss://echo.websocket.org')
+            socket.onmessage = function(msg) {
+                console.log('Got message from', msg.isMaster ? "master" : "slave", msg)
             }
             socket.onerror = console.log
-            socket.onclose = (isMaster) => console.log('CLOSED!', isMaster)
-            socket.onopen = (isMaster) => console.log('OPENED!', isMaster)
-
-            const button = document.getElementById('btn')
-            button.addEventListener('click', e => {
+            socket.onclose = function(isMaster) {console.log('CLOSED!', isMaster)}
+            socket.onopen = function(isMaster) {console.log('OPENED!', isMaster)}
+            var button = document.getElementById('btn')
+            button.addEventListener('click', function(e) {
                 socket.send('YAY')
             })
         </script>

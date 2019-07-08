@@ -1,3 +1,4 @@
+import "core-js/fn/promise";
 export default class SharedWebsocket {
     url: string;
     protocols?: string[] | undefined;
@@ -23,7 +24,7 @@ export default class SharedWebsocket {
     answerIsMasterAlive(): void;
     handleCommunication(msg: object | any): void;
     destroy(): void;
-    broadcast(msg: object): void;
+    broadcast(msg: object | any): void;
     isMasterAlive(): Promise<boolean>;
     setMaster(): void;
     onclose: Function;
