@@ -12,10 +12,12 @@ export default class SharedWebsocket {
     private uuid;
     private _websocket;
     private destroyed;
+    private alone;
     constructor(url: string, protocols?: string[] | undefined);
     send(data: any): void;
     close(): void;
     setUp(): Promise<void>;
+    fightToBeMaster(): Promise<boolean>;
     setEvents(): void;
     handleStorageEvents(event: any): void;
     answerIsMasterAlive(): void;

@@ -23,6 +23,9 @@ export default class SharedWebsocket {
     private _websocket: WebSocket | any
     private destroyed = false
 
+    // fight for master
+    private alone: boolean = true
+
     constructor(public url: string, public protocols?: string[]) {
         this.uuid = uuidv4()
         this.setEvents()
@@ -64,16 +67,39 @@ export default class SharedWebsocket {
             return
         }
 
-        localStorage.setItem('WANT_TO_BE_MASTER', this.uuid)
-        const iWillBeMaster = await new Promise(resolve =>
-            setTimeout(() => {
-                resolve(localStorage.getItem('WANT_TO_BE_MASTER') === this.uuid)
-            }, Math.random() * 100 + 100)
-        )
+        let iWillBeMaster = await this.fightToBeMaster()
+
         if (iWillBeMaster) {
             return this.setMaster()
         }
-        setTimeout(this.setUp.bind(this), 150)
+    }
+
+    async fightToBeMaster(): Promise<boolean> {
+        localStorage.setItem('WANT_TO_BE_MASTER', this.uuid)
+        let willYou = true
+        let firstRun = true
+
+        while (!this.alone || firstRun) {
+            firstRun = false
+            willYou =
+                willYou &&
+                (await new Promise(resolve =>
+                    setTimeout(() => {
+                        const who = localStorage.getItem('WANT_TO_BE_MASTER')
+                        resolve(who === this.uuid)
+                    }, 50)
+                ))
+            if (willYou) {
+                this.alone = true
+                this.broadcast({
+                    type: 'want_to_be_master'
+                })
+                await new Promise(resolve => setTimeout(resolve, 150))
+            } else {
+                break
+            }
+        }
+        return willYou
     }
 
     setEvents() {
@@ -143,6 +169,10 @@ export default class SharedWebsocket {
                 this._onmessage(msg.msg)
                 break
 
+            case 'want_to_be_master':
+                this.alone = false
+                break
+
             case 'master_left':
                 setTimeout(this.setUp.bind(this), 100)
                 break
@@ -177,7 +207,7 @@ export default class SharedWebsocket {
                 uuid: currentMaster
             }
             this.broadcast(msg)
-            await new Promise(r => setTimeout(r, 100))
+            await new Promise(r => setTimeout(r, 150))
             resolve(this._isMasterAlive)
         })
     }

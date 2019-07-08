@@ -6,7 +6,7 @@
     <body>
         <button id="btn">SEND</button>
         <script>
-            const socket = new SharedWebsocket('wss://echo.websocket.org')
+            const socket = new SharedWebsocket('ws://demos.kaazing.com/echo')
             socket.onmessage = msg => {
                 console.log(`Got message from ${msg.isMaster ? "master" : "slave"}!`, msg)
             }

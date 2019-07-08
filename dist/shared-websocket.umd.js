@@ -63,6 +63,7 @@
             return v.toString(16);
         });
     }
+    //# sourceMappingURL=utils.js.map
 
     // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
     var SharedWebsocket = /** @class */ (function () {
@@ -78,6 +79,8 @@
             this.isMaster = false;
             this._isMasterAlive = false;
             this.destroyed = false;
+            // fight for master
+            this.alone = true;
             this.uuid = uuidv4();
             this.setEvents();
             this.setUp();
@@ -112,7 +115,6 @@
         SharedWebsocket.prototype.setUp = function () {
             return __awaiter(this, void 0, void 0, function () {
                 var isMasterAlive, iWillBeMaster;
-                var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -125,19 +127,56 @@
                             if (isMasterAlive) {
                                 return [2 /*return*/];
                             }
-                            localStorage.setItem('WANT_TO_BE_MASTER', this.uuid);
-                            return [4 /*yield*/, new Promise(function (resolve) {
-                                    return setTimeout(function () {
-                                        resolve(localStorage.getItem('WANT_TO_BE_MASTER') === _this.uuid);
-                                    }, Math.random() * 100 + 100);
-                                })];
+                            return [4 /*yield*/, this.fightToBeMaster()];
                         case 2:
                             iWillBeMaster = _a.sent();
                             if (iWillBeMaster) {
                                 return [2 /*return*/, this.setMaster()];
                             }
-                            setTimeout(this.setUp.bind(this), 150);
                             return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        SharedWebsocket.prototype.fightToBeMaster = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var willYou, firstRun, _a;
+                var _this = this;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            localStorage.setItem('WANT_TO_BE_MASTER', this.uuid);
+                            willYou = true;
+                            firstRun = true;
+                            _b.label = 1;
+                        case 1:
+                            if (!(!this.alone || firstRun)) return [3 /*break*/, 7];
+                            firstRun = false;
+                            _a = willYou;
+                            if (!_a) return [3 /*break*/, 3];
+                            return [4 /*yield*/, new Promise(function (resolve) {
+                                    return setTimeout(function () {
+                                        var who = localStorage.getItem('WANT_TO_BE_MASTER');
+                                        resolve(who === _this.uuid);
+                                    }, 50);
+                                })];
+                        case 2:
+                            _a = (_b.sent());
+                            _b.label = 3;
+                        case 3:
+                            willYou = _a;
+                            if (!willYou) return [3 /*break*/, 5];
+                            this.alone = true;
+                            this.broadcast({
+                                type: 'want_to_be_master'
+                            });
+                            return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 150); })];
+                        case 4:
+                            _b.sent();
+                            return [3 /*break*/, 6];
+                        case 5: return [3 /*break*/, 7];
+                        case 6: return [3 /*break*/, 1];
+                        case 7: return [2 /*return*/, willYou];
                     }
                 });
             });
@@ -201,6 +240,9 @@
                 case 'websocket_onmessage':
                     this._onmessage(msg.msg);
                     break;
+                case 'want_to_be_master':
+                    this.alone = false;
+                    break;
                 case 'master_left':
                     setTimeout(this.setUp.bind(this), 100);
                     break;
@@ -238,7 +280,7 @@
                                             uuid: currentMaster
                                         };
                                         this.broadcast(msg);
-                                        return [4 /*yield*/, new Promise(function (r) { return setTimeout(r, 100); })];
+                                        return [4 /*yield*/, new Promise(function (r) { return setTimeout(r, 150); })];
                                     case 1:
                                         _a.sent();
                                         resolve(this._isMasterAlive);
@@ -327,6 +369,7 @@
         return SharedWebsocket;
     }());
     window.SharedWebsocket = SharedWebsocket;
+    //# sourceMappingURL=shared-websocket.js.map
 
     return SharedWebsocket;
 
