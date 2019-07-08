@@ -369,7 +369,6 @@
         return SharedWebsocket;
     }());
     window.SharedWebsocket = SharedWebsocket;
-    //# sourceMappingURL=shared-websocket.js.map
 
     return SharedWebsocket;
 

@@ -363,7 +363,6 @@ var SharedWebsocket = /** @class */ (function () {
     return SharedWebsocket;
 }());
 window.SharedWebsocket = SharedWebsocket;
-//# sourceMappingURL=shared-websocket.js.map
 
 export default SharedWebsocket;
 //# sourceMappingURL=shared-websocket.es5.js.map
