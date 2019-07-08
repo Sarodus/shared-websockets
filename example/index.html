@@ -5,7 +5,6 @@
     </head>
     <body>
         <button id="btn">SEND</button>
-
         <script>
             const socket = new SharedWebsocket('wss://echo.websocket.org')
             socket.onmessage = msg => {
