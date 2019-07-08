@@ -168,7 +168,7 @@ export default class SharedWebsocket {
         localStorage.removeItem(this.WEBSOCKET_COMMUNICATION_KEY)
     }
 
-    async isMasterAlive(): Promise<Boolean> {
+    async isMasterAlive(): Promise<any> {
         this._isMasterAlive = false
         return new Promise(async resolve => {
             const currentMaster = localStorage.getItem(this.WEBSOCKET_MASTER_KEY)
