@@ -5,7 +5,7 @@
 import { uuidv4 } from './utils'
 
 interface SharedWebsocketMessageEvent extends MessageEvent {
-    isMaster: Boolean
+    isMaster: boolean
 }
 
 export default class SharedWebsocket {
@@ -17,8 +17,8 @@ export default class SharedWebsocket {
     private WEBSOCKET_COMMUNICATION_KEY = 'WEBSOCKET_COMMUNICATION_KEY'
     private WEBSOCKET_MASTER_KEY = 'WEBSOCKET_MASTER_KEY'
 
-    private isMaster: Boolean = false
-    private _isMasterAlive: Boolean = false
+    private isMaster: boolean = false
+    private _isMasterAlive: boolean = false
     private uuid: string
     private _websocket: WebSocket | any
     private destroyed = false
@@ -168,7 +168,7 @@ export default class SharedWebsocket {
         localStorage.removeItem(this.WEBSOCKET_COMMUNICATION_KEY)
     }
 
-    async isMasterAlive(): Promise<any> {
+    async isMasterAlive(): Promise<boolean> {
         this._isMasterAlive = false
         return new Promise(async resolve => {
             const currentMaster = localStorage.getItem(this.WEBSOCKET_MASTER_KEY)

@@ -22,7 +22,7 @@ export default class SharedWebsocket {
     handleCommunication(msg: object | any): void;
     destroy(): void;
     broadcast(msg: object): void;
-    isMasterAlive(): Promise<any>;
+    isMasterAlive(): Promise<boolean>;
     setMaster(): void;
     onclose: Function;
     onerror: Function;
