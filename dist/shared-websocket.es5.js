@@ -57,7 +57,6 @@ function uuidv4() {
         return v.toString(16);
     });
 }
-//# sourceMappingURL=utils.js.map
 
 // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
 var SharedWebsocket = /** @class */ (function () {

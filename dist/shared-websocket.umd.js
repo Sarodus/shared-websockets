@@ -1,8 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global.sharedWebsocket = factory());
-}(this, (function () { 'use strict';
+    (global = global || self, global.sharedWebsocket = factory());
+}(this, function () { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -63,7 +63,6 @@
             return v.toString(16);
         });
     }
-    //# sourceMappingURL=utils.js.map
 
     // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
     var SharedWebsocket = /** @class */ (function () {
@@ -372,5 +371,5 @@
 
     return SharedWebsocket;
 
-})));
+}));
 //# sourceMappingURL=shared-websocket.umd.js.map
