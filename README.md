@@ -1,9 +1,22 @@
-Shared websockets
------------------
+# Shared websockets
+
 
 Share same WebSocket between tabs, similar API to native WebSocket
 
-Usage:
+
+Installation
+------------
+
+`npm i shared-websockets`
+
+or
+
+`yarn add shared-websockets`
+
+
+Usage
+-----
+
 
 ```
 const socket = new SharedWebsocket('wss://echo.websocket.org')
