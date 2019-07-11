@@ -1,5 +1,5 @@
 {
-  "name": "shared-websocket",
+  "name": "shared-websockets",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
@@ -12,7 +12,7 @@
   "author": "Sarodus <jordiavellapol@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Sarodus/shared-websockets"
   },
   "license": "MIT",
   "engines": {
