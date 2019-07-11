@@ -133,7 +133,7 @@ export default class SharedWebsocket {
     handleCommunication(msg: object | any) {
         switch (msg.type) {
             case 'is_master_alive':
-                if (msg.uuid === this.uuid) {
+                if (this.isMaster) {
                     this.answerIsMasterAlive()
                 }
                 break
@@ -203,10 +203,8 @@ export default class SharedWebsocket {
     async isMasterAlive(): Promise<boolean> {
         this._isMasterAlive = false
         return new Promise(async resolve => {
-            const currentMaster = localStorage.getItem(this.WEBSOCKET_MASTER_KEY)
             const msg = {
-                type: 'is_master_alive',
-                uuid: currentMaster
+                type: 'is_master_alive'
             }
             this.broadcast(msg)
             await new Promise(r => setTimeout(r, 150))

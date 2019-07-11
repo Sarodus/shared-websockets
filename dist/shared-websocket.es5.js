@@ -1332,6 +1332,7 @@ function uuidv4() {
         return v.toString(16);
     });
 }
+//# sourceMappingURL=utils.js.map
 
 var SharedWebsocket = /** @class */ (function () {
     function SharedWebsocket(url, protocols) {
@@ -1479,7 +1480,7 @@ var SharedWebsocket = /** @class */ (function () {
     SharedWebsocket.prototype.handleCommunication = function (msg) {
         switch (msg.type) {
             case 'is_master_alive':
-                if (msg.uuid === this.uuid) {
+                if (this.isMaster) {
                     this.answerIsMasterAlive();
                 }
                 break;
@@ -1540,14 +1541,12 @@ var SharedWebsocket = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this._isMasterAlive = false;
                 return [2 /*return*/, new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
-                        var currentMaster, msg;
+                        var msg;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
-                                    currentMaster = localStorage.getItem(this.WEBSOCKET_MASTER_KEY);
                                     msg = {
-                                        type: 'is_master_alive',
-                                        uuid: currentMaster
+                                        type: 'is_master_alive'
                                     };
                                     this.broadcast(msg);
                                     return [4 /*yield*/, new Promise(function (r) { return setTimeout(r, 150); })];
@@ -1639,6 +1638,7 @@ var SharedWebsocket = /** @class */ (function () {
     return SharedWebsocket;
 }());
 window.SharedWebsocket = SharedWebsocket;
+//# sourceMappingURL=shared-websocket.js.map
 
 export default SharedWebsocket;
 //# sourceMappingURL=shared-websocket.es5.js.map

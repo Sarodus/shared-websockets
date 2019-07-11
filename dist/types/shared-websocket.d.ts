@@ -1,4 +1,4 @@
-import "core-js/fn/promise";
+import 'core-js/fn/promise';
 export default class SharedWebsocket {
     url: string;
     protocols?: string[] | undefined;
