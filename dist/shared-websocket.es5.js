@@ -1508,7 +1508,9 @@ var SharedWebsocket = /** @class */ (function () {
                 }
                 break;
             case 'websocket_onmessage':
-                this._onmessage(msg.msg);
+                if (!this.isMaster) {
+                    this._onmessage(msg.msg);
+                }
                 break;
             case 'want_to_be_master':
                 this.alone = false;
